@@ -27,16 +27,17 @@ replaces=('linux515-rt-nvidia-470xx' 'linux60-rt-nvidia-470xx')
 options=(!strip)
 install=nvidia.install
 _durl="https://us.download.nvidia.com/XFree86/Linux-x86"
-source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
-sha256sums=('fcffc3defb36eb3a6cf003638efefd9159469c5b2ce90de77dcab642aad03d98')
+source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run" 'GPL-workaround.patch')
+sha256sums=('fcffc3defb36eb3a6cf003638efefd9159469c5b2ce90de77dcab642aad03d98'
+            '59958c134261a53edb641ba3c96b13e397d1903ec3637c8be8d61141356292de')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 prepare() {
     sh "${_pkg}.run" --extract-only
 
-#    cd "${_pkg}/kernel"
-#    paches here
+    cd "${_pkg}"
+    patch -p1 -i ../GPL-workaround.patch
 }
 
 build() {
