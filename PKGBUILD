@@ -10,6 +10,7 @@
 # Contributor: Ike Devolder <ike.devolder+gmail+com>
 
 _linuxprefix=linux66-rt
+_extramodules=extramodules-6.6-rt-MANJARO
 
 pkgname=$_linuxprefix-nvidia-470xx
 pkgdesc="NVIDIA drivers for linux"
@@ -33,11 +34,12 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 prepare() {
     sh "${_pkg}.run" --extract-only
 
-    cd "${_pkg}"
+    cd "${_pkg}/kernel"
+    # patches here
 }
 
 build() {
-    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
+    _kernver="$(cat /usr/lib/modules/${_extramodules}/version)"
 
     cd "${_pkg}"
     export DISTCC_DISABLE=1
@@ -47,10 +49,8 @@ build() {
 }
 
 package() {
-    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
-
     cd "${_pkg}"
-    install -Dm 644 kernel/*.ko -t "${pkgdir}/usr/lib/modules/${_kernver}/extramodules/"
+    install -Dm644 kernel/*.ko -t "${pkgdir}/usr/lib/modules/${_extramodules}/"
 
     # compress each module individually
     find "${pkgdir}" -name '*.ko' -exec xz -T1 {} +
