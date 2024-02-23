@@ -10,7 +10,6 @@
 # Contributor: Ike Devolder <ike.devolder+gmail+com>
 
 _linuxprefix=linux66-rt
-_extramodules=extramodules-6.6-rt-MANJARO
 
 pkgname=$_linuxprefix-nvidia-470xx
 pkgdesc="NVIDIA drivers for linux"
@@ -25,9 +24,8 @@ makedepends=("$_linuxprefix-headers")
 provides=("nvidia=$pkgver" 'NVIDIA-MODULE')
 replaces=('linux515-rt-nvidia-470xx' 'linux60-rt-nvidia-470xx')
 options=(!strip)
-install=nvidia.install
 _durl="https://us.download.nvidia.com/XFree86/Linux-x86"
-source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run" 'GPL-workaround.patch')
+source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
 sha256sums=('fcffc3defb36eb3a6cf003638efefd9159469c5b2ce90de77dcab642aad03d98'
             '59958c134261a53edb641ba3c96b13e397d1903ec3637c8be8d61141356292de')
 
@@ -37,11 +35,10 @@ prepare() {
     sh "${_pkg}.run" --extract-only
 
     cd "${_pkg}"
-    patch -p1 -i ../GPL-workaround.patch
 }
 
 build() {
-    _kernver="$(cat /usr/lib/modules/${_extramodules}/version)"
+    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
 
     cd "${_pkg}"
     export DISTCC_DISABLE=1
@@ -51,6 +48,8 @@ build() {
 }
 
 package() {
+    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
+
     cd "${_pkg}"
     install -Dm644 kernel/*.ko -t "${pkgdir}/usr/lib/modules/${_extramodules}/"
 
