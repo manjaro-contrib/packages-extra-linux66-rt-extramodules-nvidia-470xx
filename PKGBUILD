@@ -31,9 +31,9 @@ source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
         '0002-Fix-conftest-to-use-a-short-wchar_t.patch'
         '0003-Fix-conftest-to-use-nv_drm_gem_vmap-which-has-the-se.patch')
 sha256sums=('4a4b2f1a0e5f4403dcc94b5df9970cb064fccee44e82282e6f03dbde6e4dfff0'
-            'e9df0c3c563466f7d747a3bf45900ba7804b072c899cde016e8d557e1921d60e'
-            '1181bef2128bd4d74b661164bed8a1eb19c917e68fedbcaf65a24a4c2638cb8f'
-            '84f3e59f2730752c0c4ef8bd2488953ccad13eb91a7f045488754e3bd61a1a6e')
+            'eafd8a3c9740f34c8a0ccd0942d05318be94889eeb64ff66c54c8d8524ff5fd0'
+            'aad55ebe45fca932ebeea5071bde489d3533bcccb3fe16995c8e70929b62e01a'
+            '2339209c742bf58e5aa1e5c369e925f0c78eeb74537288183b683882ebf78809')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
