@@ -1,7 +1,5 @@
 # Maintainer: Bernhard Landauer <bernhard@manjaro.org>
-
-# Archlinux credits:
-# Maintainer : Thomas Baechler <thomas@archlinux.org>
+# Contributor: Thomas Baechler <thomas@archlinux.org>
 # Contributor: Alonso Rodriguez <alonsorodi20 (at) gmail (dot) com>
 # Contributor: Sven-Hendrik Haase <sh@lutzhaase.com>
 # Contributor: Felix Yan <felixonmars@archlinux.org>
@@ -15,7 +13,7 @@ _extramodules=extramodules-6.6-rt-MANJARO
 pkgname=$_linuxprefix-nvidia-470xx
 pkgdesc="NVIDIA drivers for linux"
 pkgver=470.256.02
-pkgrel=13
+pkgrel=14
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -65,7 +63,7 @@ package() {
     install -Dm644 kernel/*.ko -t "${pkgdir}/usr/lib/modules/${_extramodules}/"
 
     # compress each module individually
-    find "${pkgdir}" -name '*.ko' -exec xz -T1 {} +
+    find "${pkgdir}" -name '*.ko' -exec zstd --rm -19 {} +
 
     install -Dm644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
