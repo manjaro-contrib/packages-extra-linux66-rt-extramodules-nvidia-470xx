@@ -8,20 +8,18 @@
 # Contributor: Ike Devolder <ike.devolder+gmail+com>
 
 _linuxprefix=linux66-rt
-_extramodules=extramodules-6.6-rt-MANJARO
 
-pkgname=$_linuxprefix-nvidia-470xx
+pkgname="${_linuxprefix}-nvidia-470xx"
 pkgdesc="NVIDIA drivers for linux"
 pkgver=470.256.02
 pkgrel=16
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
-groups=("$_linuxprefix-extramodules")
-depends=("$_linuxprefix" "nvidia-utils=$pkgver")
-makedepends=("$_linuxprefix-headers")
-provides=("nvidia=$pkgver" 'NVIDIA-MODULE')
-replaces=('linux515-rt-nvidia-470xx' 'linux60-rt-nvidia-470xx')
+groups=("${_linuxprefix}-extramodules")
+depends=("${_linuxprefix}" "nvidia-utils=${pkgver}")
+makedepends=("${_linuxprefix}-headers")
+provides=("nvidia=${pkgver}" 'NVIDIA-MODULE')
 options=(!strip)
 _durl="https://us.download.nvidia.com/XFree86/Linux-x86"
 source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
@@ -49,21 +47,20 @@ prepare() {
 }
 
 build() {
-    _kernver="$(cat /usr/lib/modules/${_extramodules}/version)"
+    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
 
     cd "${_pkg}"
-    export DISTCC_DISABLE=1
-    export CCACHE_DISABLE=1
-    export IGNORE_PREEMPT_RT_PRESENCE=1
     make -C kernel SYSSRC=/usr/lib/modules/"${_kernver}/build" module
 }
 
 package() {
+    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
+
     cd "${_pkg}"
-    install -Dm644 kernel/*.ko -t "${pkgdir}/usr/lib/modules/${_extramodules}/"
+    install -Dm 644 kernel/*.ko -t "${pkgdir}/usr/lib/modules/${_kernver}/extramodules/"
 
     # compress each module individually
     find "${pkgdir}" -name '*.ko' -exec zstd --rm -19 {} +
 
-    install -Dm644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}/"
+    install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
