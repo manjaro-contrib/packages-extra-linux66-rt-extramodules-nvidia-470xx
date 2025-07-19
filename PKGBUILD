@@ -25,7 +25,6 @@ options=(!strip)
 build() {
     _kernver="$(cat /usr/src/${_linuxprefix}/version)"
 
-    cd "${_pkg}"
     export DISTCC_DISABLE=1
     export CCACHE_DISABLE=1
     export IGNORE_PREEMPT_RT_PRESENCE=1
